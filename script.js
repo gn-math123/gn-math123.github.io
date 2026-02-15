@@ -1,3 +1,46 @@
+// Anti-redirect and security protection
+(function () {
+  // Save the original window.open for internal use
+  window._originalOpen = window.open;
+  
+  const block = () => {
+    console.warn("Blocked redirect attempt");
+  };
+
+  try {
+    Object.defineProperty(window, "location", {
+      configurable: false,
+      enumerable: true,
+      get() {
+        return {
+          assign: block,
+          replace: block,
+          reload: block,
+          href: window.location.href
+        };
+      },
+      set: block
+    });
+  } catch (e) {}
+
+  window.open = function () {
+    console.warn("Blocked window.open");
+    return null;
+  };
+  
+  try {
+    Object.defineProperty(window, "top", {
+      get() {
+        return window;
+      }
+    });
+  } catch (e) {}
+  
+  window.addEventListener("beforeunload", (e) => {
+    e.stopImmediatePropagation();
+  }, true);
+})();
+
 const container = document.getElementById('container');
 const zoneViewer = document.getElementById('zoneViewer');
 let zoneFrame = document.getElementById('zoneFrame');
@@ -286,7 +329,7 @@ const customMovies = [
     {
         name: "Five Nights At Freddys",
         url: "https://drive.google.com/file/d/1xeeJK79lN10QE2XrqnWGbzgQ2Yz4_7cu/view?usp=sharing",
-        thumbnail: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8g3BKsWyIiosuTsSddHFcYtvFj4d2_eHGUfGTRtGtTuHqxErNvWJe9nzTDtYvF9Z8MBPp&s=10" // Leave empty for placeholder
+        thumbnail: "https://lh3.googleusercontent.com/sitesv/APaQ0SSgzm4eCxCcQ-NTnyhDygrdXti8dTfesz4bz4FBxZlvk8Iqeu1Ybf8hxx4a_XqB5WglksX5I5jMZLdpi5VLwfD1pRL2FhPeuV0q9KhPFEVIAXavCqsvx6EnyGrZpTnBpdGsMVOC-FOBSzI9tdo9Cwi3bvB-XAB7a5WcBMK2grZSGN9bemT3ckEKBzU=w1280" // Leave empty for placeholder
     },
     {
         name: "Yandere Simulator",
@@ -446,9 +489,45 @@ function openZone(file) {
 }
 
 function aboutBlank() {
-    const newWindow = window.open("about:blank", "_blank");
-    let zone = zones.find(zone => zone.id + '' === document.getElementById('zoneId').textContent).url.replace("{COVER_URL}", coverURL).replace("{HTML_URL}", htmlURL);
-    fetch(zone+"?t="+Date.now()).then(response => response.text()).then(html => {
+    const zoneId = document.getElementById('zoneId').textContent;
+    
+    // Check if it's a movie
+    if (zoneId === 'movie') {
+        // For movies, just get the iframe src
+        const movieUrl = zoneFrame.src;
+        if (movieUrl && window._originalOpen) {
+            const newWindow = window._originalOpen.call(window, "about:blank", "_blank");
+            
+            if (newWindow) {
+                newWindow.document.open();
+                newWindow.document.write(`
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <style>
+                            body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; }
+                            iframe { width: 100%; height: 100%; border: none; }
+                        </style>
+                    </head>
+                    <body>
+                        <iframe src="${movieUrl}"></iframe>
+                    </body>
+                    </html>
+                `);
+                newWindow.document.close();
+            }
+        }
+        return;
+    }
+    
+    // Original code for zones
+    let zone = zones.find(zone => zone.id + '' === zoneId);
+    if (!zone || !window._originalOpen) return;
+    
+    const newWindow = window._originalOpen.call(window, "about:blank", "_blank");
+    
+    let zoneUrl = zone.url.replace("{COVER_URL}", coverURL).replace("{HTML_URL}", htmlURL);
+    fetch(zoneUrl+"?t="+Date.now()).then(response => response.text()).then(html => {
         if (newWindow) {
             newWindow.document.open();
             newWindow.document.write(html);
@@ -469,7 +548,17 @@ function closeZone() {
 }
 
 function downloadZone() {
-    let zone = zones.find(zone => zone.id + '' === document.getElementById('zoneId').textContent);
+    const zoneId = document.getElementById('zoneId').textContent;
+    
+    // Movies can't be downloaded like zones
+    if (zoneId === 'movie') {
+        alert('Movies cannot be downloaded. Use "Open in New Tab" instead.');
+        return;
+    }
+    
+    let zone = zones.find(zone => zone.id + '' === zoneId);
+    if (!zone) return;
+    
     fetch(zone.url.replace("{HTML_URL}", htmlURL)+"?t="+Date.now()).then(res => res.text()).then(text => {
         const blob = new Blob([text], {
             type: "text/plain;charset=utf-8"

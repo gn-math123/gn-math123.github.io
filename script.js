@@ -17,6 +17,7 @@ const htmlURL = "https://cdn.jsdelivr.net/gh/gn-math/html@main";
 let zones = [];
 let popularityData = {};
 const featuredContainer = document.getElementById('featuredZones');
+const moviesContainer = document.getElementById('moviesContainer');
 function toTitleCase(str) {
   return str.replace(
     /\w\S*/g,
@@ -184,6 +185,7 @@ function sortZones() {
         displayFeaturedZones(featured);
     }
     displayZones(zones);
+    displayMovies(zones);
 }
 
 function displayFeaturedZones(featuredZones) {
@@ -282,9 +284,9 @@ function displayZones(zones) {
 // Customizable Movies Configuration
 const customMovies = [
     {
-        name: "Five Nights At Freddy's",
-        url: "https://drive.google.com/file/d/1xeeJK79lN10QE2XrqnWGbzgQ2Yz4_7cu/view?usp=sharing",
-        thumbnail: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8g3BKsWyIiosuTsSddHFcYtvFj4d2_eHGUfGTRtGtTuHqxErNvWJe9nzTDtYvF9Z8MBPp&s=10" // Leave empty for placeholder
+        name: "World Box",
+        url: "https://example.com/worldbox",
+        thumbnail: "" // Leave empty for placeholder
     },
     {
         name: "Yandere Simulator",
@@ -934,4 +936,3 @@ XMLHttpRequest.prototype.open = function (method, url) {
 HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 };
-

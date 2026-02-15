@@ -279,6 +279,84 @@ function displayZones(zones) {
     });
 }
 
+// Customizable Movies Configuration
+const customMovies = [
+    {
+        name: "World Box",
+        url: "https://example.com/worldbox",
+        thumbnail: "" // Leave empty for placeholder
+    },
+    {
+        name: "Yandere Simulator",
+        url: "https://example.com/yandere",
+        thumbnail: "" // Leave empty for placeholder
+    }
+    // Add more movies here following the same format:
+    // {
+    //     name: "Movie Name",
+    //     url: "https://your-movie-link.com",
+    //     thumbnail: "https://your-image-url.com/image.jpg" // Optional
+    // }
+];
+
+function displayMovies(zones) {
+    if (!moviesContainer) return;
+    
+    moviesContainer.innerHTML = "";
+    
+    if (customMovies.length === 0) {
+        moviesContainer.innerHTML = `
+            <div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-muted);">
+                No movies available yet. Check back soon! 🎬
+            </div>
+        `;
+        document.getElementById("moviesSummary").textContent = `🎬 Movies & Shows (0)`;
+        return;
+    }
+    
+    customMovies.forEach((movie) => {
+        const movieCard = document.createElement("div");
+        movieCard.className = "movie-card";
+        movieCard.onclick = () => {
+            window.open(movie.url, "_blank");
+        };
+        
+        const thumbnail = document.createElement("div");
+        thumbnail.className = "movie-thumbnail";
+        
+        if (movie.thumbnail && movie.thumbnail.trim() !== "") {
+            const img = document.createElement("img");
+            img.src = movie.thumbnail;
+            img.alt = movie.name;
+            img.onerror = () => {
+                // If image fails to load, show placeholder
+                thumbnail.classList.add("no-image");
+                thumbnail.innerHTML = '<span class="placeholder-icon">🎬</span>';
+            };
+            thumbnail.appendChild(img);
+        } else {
+            thumbnail.classList.add("no-image");
+            thumbnail.innerHTML = '<span class="placeholder-icon">🎬</span>';
+        }
+        
+        movieCard.appendChild(thumbnail);
+        
+        const movieInfo = document.createElement("div");
+        movieInfo.className = "movie-info";
+        
+        const title = document.createElement("h3");
+        title.className = "movie-title";
+        title.textContent = movie.name;
+        
+        movieInfo.appendChild(title);
+        movieCard.appendChild(movieInfo);
+        
+        moviesContainer.appendChild(movieCard);
+    });
+    
+    document.getElementById("moviesSummary").textContent = `🎬 Movies & Shows (${customMovies.length})`;
+}
+
 function filterZones2() {
     const query = filterOptions.value;
     if (query === "none") {

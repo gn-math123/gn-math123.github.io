@@ -284,7 +284,7 @@ function displayZones(zones) {
 // Customizable Movies Configuration
 const customMovies = [
     {
-        name: "Five Nights at Freddys",
+        name: "Five Nights At Freddys",
         url: "https://drive.google.com/file/d/1xeeJK79lN10QE2XrqnWGbzgQ2Yz4_7cu/view?usp=sharing",
         thumbnail: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8g3BKsWyIiosuTsSddHFcYtvFj4d2_eHGUfGTRtGtTuHqxErNvWJe9nzTDtYvF9Z8MBPp&s=10" // Leave empty for placeholder
     },
@@ -300,6 +300,35 @@ const customMovies = [
     //     thumbnail: "https://your-image-url.com/image.jpg" // Optional
     // }
 ];
+
+function openMovie(movie) {
+    // Recreate iframe if needed
+    if (!zoneFrame || zoneFrame.contentDocument === null) {
+        // Remove old iframe if it exists
+        const oldFrame = document.getElementById('zoneFrame');
+        if (oldFrame) {
+            oldFrame.remove();
+        }
+        // Create new iframe
+        zoneFrame = document.createElement("iframe");
+        zoneFrame.id = "zoneFrame";
+        zoneViewer.appendChild(zoneFrame);
+    }
+    
+    // Set the iframe source to the movie URL
+    zoneFrame.src = movie.url;
+    
+    // Update the zone viewer header
+    document.getElementById('zoneName').textContent = movie.name;
+    document.getElementById('zoneId').textContent = 'movie';
+    document.getElementById('zoneAuthor').textContent = "Movie/Show";
+    document.getElementById('zoneAuthor').href = "#";
+    document.getElementById('zoneAuthor').style.display = "none"; // Hide author for movies
+    
+    // Show the zone viewer
+    zoneViewer.style.display = "flex";
+    zoneViewer.hidden = false;
+}
 
 function displayMovies(zones) {
     if (!moviesContainer) return;
@@ -319,9 +348,13 @@ function displayMovies(zones) {
     customMovies.forEach((movie) => {
         const movieCard = document.createElement("div");
         movieCard.className = "movie-card";
-        movieCard.onclick = () => {
-            window.open(movie.url, "_blank");
-        };
+        
+        // Add click handler to open in iframe popup
+        movieCard.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            openMovie(movie);
+        });
         
         const thumbnail = document.createElement("div");
         thumbnail.className = "movie-thumbnail";

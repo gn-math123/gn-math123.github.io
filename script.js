@@ -284,7 +284,7 @@ function displayZones(zones) {
 // Customizable Movies Configuration
 const customMovies = [
     {
-        name: "Five NIghts at Freddys",
+        name: "Five Nights at Freddys",
         url: "https://drive.google.com/file/d/1xeeJK79lN10QE2XrqnWGbzgQ2Yz4_7cu/view?usp=sharing",
         thumbnail: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8g3BKsWyIiosuTsSddHFcYtvFj4d2_eHGUfGTRtGtTuHqxErNvWJe9nzTDtYvF9Z8MBPp&s=10" // Leave empty for placeholder
     },
@@ -906,6 +906,11 @@ function closePopup() {
 }
 listZones();
 
+// Initialize movies section on page load
+if (typeof displayMovies === 'function') {
+    displayMovies();
+}
+
 const schoolList = ["deledao", "goguardian", "lightspeed", "linewize", "securly", ".edu/"];
 
 function isBlockedDomain(url) {
@@ -936,4 +941,3 @@ XMLHttpRequest.prototype.open = function (method, url) {
 HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 };
-

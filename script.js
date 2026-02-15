@@ -328,14 +328,24 @@ function displayZones(zones) {
 const customMovies = [
     {
         name: "Five Nights at Freddys",
-        url: "https://drive.google.com/file/d/1xeeJK79lN10QE2XrqnWGbzgQ2Yz4_7cu/view?usp=sharing",
+        url: "https://drive.google.com/file/d/1xeeJK79lN10QE2XrqnWGbzgQ2Yz4_7cu/view",
         thumbnail: "https://lh3.googleusercontent.com/sitesv/APaQ0SSgzm4eCxCcQ-NTnyhDygrdXti8dTfesz4bz4FBxZlvk8Iqeu1Ybf8hxx4a_XqB5WglksX5I5jMZLdpi5VLwfD1pRL2FhPeuV0q9KhPFEVIAXavCqsvx6EnyGrZpTnBpdGsMVOC-FOBSzI9tdo9Cwi3bvB-XAB7a5WcBMK2grZSGN9bemT3ckEKBzU=w1280" // Leave empty for placeholder
     },
     {
-        name: "Yandere Simulator",
-        url: "https://example.com/yandere",
-        thumbnail: "" // Leave empty for placeholder
-    }
+        name: "Five Nights at Freddys 2",
+        url: "https://drive.google.com/file/d/1gSq1W-IOQYWsupD_-IWpm0zBbKd4OaI0/view?usp=sharing",
+        thumbnail: "https://lh3.googleusercontent.com/sitesv/APaQ0SRlqw-9NLKokiM6ag6s-SIRv47X7vP-Mp3Z_WOWGpERLmvN3m4eb_gpW3JQMw0-tf-hcHp3INJpT7AnQhVq-eaQBaih0DdaxPLF8QGTqov_ePtMCB8_VA8ycM2hrcK8KnKoQ4AgoIj9_dalxAUxz9DkH7vBf0DgS7E4fywHIr9uQ0fGzZl0LjDGA5g0B3J04vfy48D_CR84P6ShvCgOjxnOF3aqfrPWQBfqadc=w1280" // Leave empty for placeholder
+    },
+    {  
+        name: "John Wick Chapter 2",
+        url: "https://drive.google.com/file/d/1bbmDkzdBoraed9t3YNXWyanfb5ObckMt/view?usp=sharing",
+        thumbnail: "https://lh3.googleusercontent.com/sitesv/APaQ0SQs0l4C_AWmzvFWw8HFuBXjLIxT4mbZgp13xujJW3XmfTrzP2Qriq8fTrGGRNOhxtbOOQ8fYoNFYcwmGnvLB8mgsRfo4yr-yp795FKcD86NCieZm74YOVdcj8UqNhLLgOQODgX_b4thfkLgMpbcFf2axIXl-tnjZ6E0C0rCAZP0s_NQY39jcFnMUmikl-XT7jNHQMBIJTqtNPZejDhOSD2frBHlFfXr8aMW2xI=w1280" // Leave empty for placeholder
+    },
+    {  
+        name: "Remember the Titans",
+        url: "https://drive.google.com/file/d/1b3lRLWpd_qB-stOSkUkfUss7s4-LUmy0/view?usp=sharing",
+        thumbnail: "https://lh3.googleusercontent.com/sitesv/APaQ0STuZl6JcTaXjPoktTjz5mSfGHfUyz4tnLrvG_ckiOpp43yqHCL1d3nHr1OJBWMi_iUQV328LxAZTiTqwUyJcrcu0D_EWLgHi8YGf9tYyautXrqN76vQvrZH5_sMwOWLWBnj02La0uuTcstRtwyo78xYo24wjMhhvHPtXd2y0D9VUpUEnYYX4p8nnxZm5Rpp8ZEAN9Bkg2mDoAA3AAzI7znMdDtDAXlSCuVFdyQ=w1280" // Leave empty for placeholder
+    },
     // Add more movies here following the same format:
     // {
     //     name: "Movie Name",
@@ -1016,3 +1026,4 @@ XMLHttpRequest.prototype.open = function (method, url) {
 HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 };
+

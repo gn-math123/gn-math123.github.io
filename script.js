@@ -327,7 +327,7 @@ function displayZones(zones) {
 // Customizable Movies Configuration
 const customMovies = [
     {
-        name: "Five Nights At Freddys",
+        name: "Five Nights at Freddys",
         url: "https://drive.google.com/file/d/1xeeJK79lN10QE2XrqnWGbzgQ2Yz4_7cu/view?usp=sharing",
         thumbnail: "https://lh3.googleusercontent.com/sitesv/APaQ0SSgzm4eCxCcQ-NTnyhDygrdXti8dTfesz4bz4FBxZlvk8Iqeu1Ybf8hxx4a_XqB5WglksX5I5jMZLdpi5VLwfD1pRL2FhPeuV0q9KhPFEVIAXavCqsvx6EnyGrZpTnBpdGsMVOC-FOBSzI9tdo9Cwi3bvB-XAB7a5WcBMK2grZSGN9bemT3ckEKBzU=w1280" // Leave empty for placeholder
     },
@@ -345,32 +345,20 @@ const customMovies = [
 ];
 
 function openMovie(movie) {
-    // Recreate iframe if needed
-    if (!zoneFrame || zoneFrame.contentDocument === null) {
-        // Remove old iframe if it exists
-        const oldFrame = document.getElementById('zoneFrame');
-        if (oldFrame) {
-            oldFrame.remove();
-        }
-        // Create new iframe
-        zoneFrame = document.createElement("iframe");
-        zoneFrame.id = "zoneFrame";
-        zoneViewer.appendChild(zoneFrame);
+    // Google Drive and many streaming sites block iframe embedding
+    // So we'll open movies directly in a new tab using the saved original window.open
+    if (window._originalOpen) {
+        window._originalOpen.call(window, movie.url, "_blank");
+    } else {
+        // Fallback: create a temporary link and click it
+        const a = document.createElement('a');
+        a.href = movie.url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
     }
-    
-    // Set the iframe source to the movie URL
-    zoneFrame.src = movie.url;
-    
-    // Update the zone viewer header
-    document.getElementById('zoneName').textContent = movie.name;
-    document.getElementById('zoneId').textContent = 'movie';
-    document.getElementById('zoneAuthor').textContent = "Movie/Show";
-    document.getElementById('zoneAuthor').href = "#";
-    document.getElementById('zoneAuthor').style.display = "none"; // Hide author for movies
-    
-    // Show the zone viewer
-    zoneViewer.style.display = "flex";
-    zoneViewer.hidden = false;
 }
 
 function displayMovies(zones) {
@@ -491,36 +479,7 @@ function openZone(file) {
 function aboutBlank() {
     const zoneId = document.getElementById('zoneId').textContent;
     
-    // Check if it's a movie
-    if (zoneId === 'movie') {
-        // For movies, just get the iframe src
-        const movieUrl = zoneFrame.src;
-        if (movieUrl && window._originalOpen) {
-            const newWindow = window._originalOpen.call(window, "about:blank", "_blank");
-            
-            if (newWindow) {
-                newWindow.document.open();
-                newWindow.document.write(`
-                    <!DOCTYPE html>
-                    <html>
-                    <head>
-                        <style>
-                            body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; }
-                            iframe { width: 100%; height: 100%; border: none; }
-                        </style>
-                    </head>
-                    <body>
-                        <iframe src="${movieUrl}"></iframe>
-                    </body>
-                    </html>
-                `);
-                newWindow.document.close();
-            }
-        }
-        return;
-    }
-    
-    // Original code for zones
+    // Original code for zones only
     let zone = zones.find(zone => zone.id + '' === zoneId);
     if (!zone || !window._originalOpen) return;
     
@@ -549,12 +508,6 @@ function closeZone() {
 
 function downloadZone() {
     const zoneId = document.getElementById('zoneId').textContent;
-    
-    // Movies can't be downloaded like zones
-    if (zoneId === 'movie') {
-        alert('Movies cannot be downloaded. Use "Open in New Tab" instead.');
-        return;
-    }
     
     let zone = zones.find(zone => zone.id + '' === zoneId);
     if (!zone) return;

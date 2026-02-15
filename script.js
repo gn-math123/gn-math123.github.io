@@ -345,7 +345,7 @@ const customMovies = [
         name: "Remember the Titans",
         url: "https://drive.google.com/file/d/1b3lRLWpd_qB-stOSkUkfUss7s4-LUmy0/view?usp=sharing",
         thumbnail: "https://lh3.googleusercontent.com/sitesv/APaQ0STuZl6JcTaXjPoktTjz5mSfGHfUyz4tnLrvG_ckiOpp43yqHCL1d3nHr1OJBWMi_iUQV328LxAZTiTqwUyJcrcu0D_EWLgHi8YGf9tYyautXrqN76vQvrZH5_sMwOWLWBnj02La0uuTcstRtwyo78xYo24wjMhhvHPtXd2y0D9VUpUEnYYX4p8nnxZm5Rpp8ZEAN9Bkg2mDoAA3AAzI7znMdDtDAXlSCuVFdyQ=w1280" // Leave empty for placeholder
-    },
+    }
     // Add more movies here following the same format:
     // {
     //     name: "Movie Name",
@@ -1026,4 +1026,5 @@ XMLHttpRequest.prototype.open = function (method, url) {
 HTMLCanvasElement.prototype.toDataURL = function (...args) {
     return "";
 };
+
 

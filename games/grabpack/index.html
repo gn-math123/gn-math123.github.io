@@ -252,7 +252,7 @@ body {
 
 	// Dynamically load the engine script, THEN start the game inside onload
 	var script = document.createElement('script');
-	script.src = 'Grabpack%20In%20Godot.js';
+	script.src = 'Grabpack In Godot.js';
 	script.onload = function () {
 		const engine = new Engine(GODOT_CONFIG);
 		const missing = Engine.getMissingFeatures({ threads: GODOT_THREADS_ENABLED });
